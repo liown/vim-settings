@@ -159,6 +159,4 @@ vim-table-mode
 
 ###Usage
 
-use vundle, just need copy `.vimrc` and:
-
-    :PluginInstall
+    sh install.sh

@@ -1,4 +1,4 @@
-﻿""""""""""""""""""""""VUNDLE PLUGIN""""""""""""""""""""
+""""""""""""""""""""""VUNDLE PLUGIN""""""""""""""""""""
 
 " 不兼容vi
 set nocompatible
@@ -16,44 +16,44 @@ call vundle#begin()
 "call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plugin 'file://'.$HOME.'/.vim/bundle/Vundle.vim'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
 
-Plugin 'kabbamine/vcoolor.vim'
-Plugin 'guns/vim-clojure-highlight'
-Plugin 'guns/vim-sexp'
-Plugin 'guns/vim-clojure-static'
-Plugin 'tpope/vim-fireplace'
-Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'mattn/emmet-vim'
-Plugin 'dhruvasagar/vim-table-mode'
-Plugin 'gorodinskiy/vim-coloresque'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'walm/jshint.vim'
-Plugin 'moll/vim-node'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'Yggdroot/indentLine'
-Plugin 'nvie/vim-flake8'
+Plugin 'file://'.$HOME.'/.vim/bundle/vcoolor.vim'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-clojure-highlight'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-sexp'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-clojure-static'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-fireplace'
+Plugin 'file://'.$HOME.'/.vim/bundle/rainbow_parentheses.vim'
+Plugin 'file://'.$HOME.'/.vim/bundle/emmet-vim'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-table-mode'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-coloresque'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-javascript-syntax'
+Plugin 'file://'.$HOME.'/.vim/bundle/jshint.vim'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-node'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-gitgutter'
+Plugin 'file://'.$HOME.'/.vim/bundle/indentLine'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-flake8'
 if has('python')
-    Plugin 'davidhalter/jedi-vim'
-    Plugin 'axiaoxin/vim-json-line-format'
-    Plugin 'SirVer/ultisnips'
+    Plugin 'file://'.$HOME.'/.vim/bundle/jedi-vim'
+    Plugin 'file://'.$HOME.'/.vim/bundle/vim-json-line-format'
+    Plugin 'file://'.$HOME.'/.vim/bundle/ultisnips'
 endif
-Plugin 'axiaoxin/favorite-vim-colorscheme'
-Plugin 'junegunn/vim-emoji'
-Plugin 'mhinz/vim-startify'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'suan/vim-instant-markdown'
-Plugin 'tpope/vim-surround'
-Plugin 'honza/vim-snippets'
-Plugin 'bling/vim-airline'
-Plugin 'kien/ctrlp.vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
+Plugin 'file://'.$HOME.'/.vim/bundle/favorite-vim-colorscheme'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-emoji'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-startify'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-multiple-cursors'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-instant-markdown'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-surround'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-snippets'
+Plugin 'file://'.$HOME.'/.vim/bundle/vim-airline'
+Plugin 'file://'.$HOME.'/.vim/bundle/ctrlp.vim'
+Plugin 'file://'.$HOME.'/.vim/bundle/tagbar'
+Plugin 'file://'.$HOME.'/.vim/bundle/nerdcommenter'
+Plugin 'file://'.$HOME.'/.vim/bundle/nerdtree'
 
 call vundle#end()
 
