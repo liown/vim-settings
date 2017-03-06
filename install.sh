@@ -6,4 +6,6 @@ mv ~/.vimrc ~/.vimrc.orig
 cp -rf .vim ~
 cp -rf .vimrc ~
 
-vim +PluginInstall +qall
+echo "alias vi=vim" >> ~/.bashrc
+source ~/.bashrc
+#vim +PluginInstall +qall
