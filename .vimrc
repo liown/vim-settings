@@ -1,9 +1,9 @@
+set encoding=utf-8 fileencodings=ucs-bom,utf-8,cp936
 """"""""""""""""""""""VUNDLE PLUGIN""""""""""""""""""""
 
 " 不兼容vi
 set nocompatible
 
-" dos2unix
 set ff=unix
 
 " 不检测文件类型
