@@ -38,11 +38,8 @@ Plugin 'moll/vim-node'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'Yggdroot/indentLine'
 Plugin 'nvie/vim-flake8'
-if has('python')
-    Plugin 'davidhalter/jedi-vim'
-    Plugin 'axiaoxin/vim-json-line-format'
-    Plugin 'SirVer/ultisnips'
-endif
+Plugin 'davidhalter/jedi-vim'
+Plugin 'SirVer/ultisnips'
 Plugin 'axiaoxin/favorite-vim-colorscheme'
 Plugin 'junegunn/vim-emoji'
 Plugin 'mhinz/vim-startify'
@@ -50,11 +47,13 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'suan/vim-instant-markdown'
 Plugin 'tpope/vim-surround'
 Plugin 'honza/vim-snippets'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
+Plugin 'Raimondi/delimitMate'
 
 call vundle#end()
 
@@ -82,6 +81,7 @@ set noundofile
 
 " 解决consle输出乱码
 language messages zh_CN.utf-8
+set langmenu=zh_CN.UTF-8
 
 " 状态栏配置
 set laststatus=2
@@ -130,10 +130,29 @@ set showmatch
 set autowrite
 
 " 允许使用鼠标
-set mouse=a
+" set mouse=a
 
 " 设置行号
 set nu
+
+" 显示相对行号
+" set relativenumber
+
+" Vim命令模式时按Tab补全
+set wildmenu
+set wildmode=list
+
+" 忽略编译文件
+set wildignore=*.swp,*.bak,*.o,*~,*.pyc,*.class,.svn
+
+" 突出显示当前行
+set cursorline
+hi CursorLine   cterm=NONE ctermbg=black ctermfg=yellow
+" hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white
+
+" 自动设当前编辑的文件所在目录为当前工作路径
+set autochdir
+autocmd BufEnter * silent! lcd %:p:h
 
 " 退格键可用
 set backspace=2
@@ -167,36 +186,41 @@ set foldlevel=99
 "set cursorcolumn
 
 " 设置 退出vim后，内容显示在终端屏幕, 可以用于查看和复制
-set t_ti= t_te=
+" set t_ti= t_te=
 
 " 打开文件时始终跳转到上次光标所在位置
+set viminfo^=%
 autocmd BufReadPost *
-      \ if ! exists("g:leave_my_cursor_position_alone") |
-      \     if line("'\"") > 0 && line ("'\"") <= line("$") |
-      \         exe "normal g'\"" |
-      \     endif |
-      \ endif
+       \ if ! exists("g:leave_my_cursor_position_alone") |
+       \     if line("'\"") > 0 && line ("'\"") <= line("$") |
+       \         exe "normal g'\"" |
+       \     endif |
+       \ endif
 
 
 
 """""""""""""""""""""""""KEY MAPPING""""""""""""""""""""
 
-" 映射切换buffer的键位
-nnoremap [b :bp<CR>
-nnoremap ]b :bn<CR>
+"设置切换Buffer快捷键"
+nnoremap <C-tab> :bn<CR>
+nnoremap <C-s-tab> :bp<CR>
+
+" 修改leader键
+let mapleader = ","
+let g:mapleader = ","
 
 " 映射切换tab的键位
-nnoremap [t :tabp<CR>
-nnoremap ]t :tabn<CR>
+" nnoremap [t :tabp<CR>
+" nnoremap ]t :tabn<CR>
 
 " normal模式下Ctrl+c全选并复制到系统剪贴板(linux必须装有vim-gnome)
-nmap <C-c> gg"+yG
+" nmap <C-c> gg"+yG
 
 " visual模式下Ctrl+c复制选中内容到剪贴板
-vmap <C-c> "+y
+" vmap <C-c> "+y
 
 " Ctrl+v原样粘贴剪切板内容
-inoremap <C-v> <ESC>"+pa
+" inoremap <C-v> <ESC>"+pa
 
 " w!!写入只读文件
 cmap w!! w !sudo tee >/dev/null %:p
@@ -235,15 +259,18 @@ else
     autocmd FileType python map <buffer> <F9> :!yapf -i %:p --style=pep8;isort %:p;<CR><CR>
 endif
 
+" <F10>切换缩进线显示
+nmap <silent> <F10> :IndentLinesToggle<CR>
+
 " 给当前单词添加引号
 nnoremap w" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap w' viw<esc>a'<esc>hbi'<esc>lel
 
 " 在Normal Mode和Visual/Select Mode下，利用Tab键和Shift-Tab键来缩进文本
-nnoremap > >>
-nnoremap < <<
-vnoremap > >gv
-vnoremap < <gv
+" nnoremap > >>
+" nnoremap < <<
+" vnoremap > >gv
+" vnoremap < <gv
 
 " 左右分割窗口Ctrl+w +v
 " 上下分割窗口Ctrl+w +s
@@ -264,6 +291,27 @@ nnoremap <C-Down> <C-w>-
 
 " emoji
 imap <C-e> <C-X><C-U>
+
+" 为shell和python文件设置指定的header
+function! SetTitle()
+    if &filetype == 'sh' "如果文件类型为.sh文件
+        call setline(1,'#!/bin/bash')
+    endif
+
+    if &filetype == 'python' "如果文件类型为python
+        call setline(1,'#!/usr/bin/env python')
+        call append(1,'#-*-coding:utf-8 -*-')
+        call append(2,'#')
+        call append(3,'#Author: liown')
+        call append(4,'#Create by:'.strftime('%Y-%m-%d %H:%M:%S'))
+        call append(5,'#Filename:'.expand('%'))
+        call append(6,'#Description:')
+    endif
+    normal G
+    normal o
+    normal o
+endfunction
+autocmd BufNewFile *.{py,go,sh} call SetTitle()
 
 
 """"""""""""""""""""""""""""""PLUGIN CONFIG""""""""""""""""""""""""""
@@ -289,7 +337,11 @@ set completefunc=emoji#complete
 let g:instant_markdown_slow = 1
 
 " airline
-let g:airline_section_y = '%{strftime("%H:%M")}'
+let g:airline_theme='simple'
+
+"这个是安装字体后 必须设置此项"
+let g:airline_powerline_fonts = 1
+
 " 开启tabline
 let g:airline#extensions#tabline#enabled = 1
 " tabline中当前buffer两端的分隔字符
@@ -299,14 +351,27 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 " tabline中buffer显示编号
 let g:airline#extensions#tabline#buffer_nr_show = 1
 
+if !exists('g:airline_symbols')
+   let g:airline_symbols = {}
+endif
+" powerline symbols
+  let g:airline_left_sep = ''
+  let g:airline_left_alt_sep = ''
+  let g:airline_right_sep = ''
+  let g:airline_right_alt_sep = ''
+  let g:airline_symbols.branch = ''
+  let g:airline_symbols.readonly = ''
+  let g:airline_symbols.linenr = '☰'
+  let g:airline_symbols.maxlinenr = ''
+
 " jedi
 autocmd FileType python setlocal completeopt-=preview
 let g:jedi#completions_command = "<C-n>"
 
 " flake8
 let g:flake8_show_in_file = 1
-let g:flake8_show_in_gutter = 1
-autocmd! BufRead,BufWritePost *.py call Flake8()
+let g:flake8_show_in_gutter = 0
+" autocmd! BufRead,BufWritePost *.py call Flake8()
 
 " gitgutter
 let g:gitgutter_sign_modified = '*'
@@ -319,6 +384,9 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 " jshint
 autocmd! BufRead,BufWritePost *.js :JSHint
+
+" indent line disable
+let g:indentLine_enabled = 0
 
 " vim-table-mode: markdown
 let g:table_mode_corner="|"
@@ -363,3 +431,4 @@ let g:vcoolor_map = '<leader>cp'
 let g:vcool_ins_rgb_map = '<leader>cpr'       " Insert rgb color.
 let g:vcool_ins_hsl_map = '<leader>cph'       " Insert hsl color.
 let g:vcool_ins_rgba_map = '<leader>cpra'      " Insert rgba color.
+
