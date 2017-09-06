@@ -8,7 +8,7 @@ set nocompatible
 set nowrapscan
 
 " 不检测文件类型
-filetype off
+filetype plugin on
 
 " set the runtime path to include Vundle and initialize
 set rtp+=$HOME/.vim/bundle/Vundle.vim
@@ -44,6 +44,7 @@ Plugin 'axiaoxin/favorite-vim-colorscheme'
 Plugin 'junegunn/vim-emoji'
 Plugin 'mhinz/vim-startify'
 Plugin 'terryma/vim-multiple-cursors'
+Plugin 'tpope/vim-markdown'
 Plugin 'suan/vim-instant-markdown'
 Plugin 'tpope/vim-surround'
 Plugin 'honza/vim-snippets'
@@ -145,10 +146,11 @@ set wildmode=list
 " 忽略编译文件
 set wildignore=*.swp,*.bak,*.o,*~,*.pyc,*.class,.svn
 
-" 突出显示当前行
+" 突出显示当前行列
 set cursorline
 hi CursorLine   cterm=NONE ctermbg=black ctermfg=yellow
-" hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white
+set cursorcolumn
+hi CursorColumn cterm=NONE ctermbg=black ctermfg=yellow
 
 " 自动设当前编辑的文件所在目录为当前工作路径
 set autochdir
@@ -169,7 +171,7 @@ autocmd BufWritePre * :%s/\s\+$//e
 
 " 保存文件时自动删除末尾空行
 autocmd BufWritePre * :%s/^$\n\+\%$//ge
-
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 " 填充Tab
 set expandtab
 set tabstop=4
@@ -209,6 +211,11 @@ nnoremap <C-s-tab> :bp<CR>
 let mapleader = ","
 let g:mapleader = ","
 
+"正常模式下跳转到行首
+nnoremap H ^
+"正常模式下跳转到行尾
+nnoremap L $
+
 " 映射切换tab的键位
 " nnoremap [t :tabp<CR>
 " nnoremap ]t :tabn<CR>
@@ -244,20 +251,23 @@ endif
 " <F6> 新建标签页
 map <F6> <Esc>:tabnew<CR>
 
-" <F7> 拷贝粘贴代码不破坏缩进
-set pastetoggle=<F7>
+" <F9> 拷贝粘贴代码不破坏缩进
+set pastetoggle=<F9>
 
-if has("win64") || has("win32")
-    " <F8> sort import and auto pep8
-    autocmd FileType python map <buffer> <F8> :!autopep8 -i -a --ignore=W690,E501 %:p<CR><CR>
-    " <F9> pep8 by yapf
-    autocmd FileType python map <buffer> <F9> :!yapf -i %:p --style=pep8<CR><CR>
-else
-    " <F8> sort import and auto pep8
-    autocmd FileType python map <buffer> <F8> :!autopep8 -i -a --ignore=W690,E501 %:p;isort %:p;<CR><CR>
-    " <F9> pep8 by yapf
-    autocmd FileType python map <buffer> <F9> :!yapf -i %:p --style=pep8;isort %:p;<CR><CR>
-endif
+" 调出python静态检查
+autocmd FileType python map <buffer> <F8> :call Flake8()<CR>
+
+" if has("win64") || has("win32")
+    " " <F8> sort import and auto pep8
+    " autocmd FileType python map <buffer> <F8> :!autopep8 -i -a --ignore=W690,E501 %:p<CR><CR>
+    " " <F9> pep8 by yapf
+    " autocmd FileType python map <buffer> <F9> :!yapf -i %:p --style=pep8<CR><CR>
+" else
+    " " <F8> sort import and auto pep8
+    " autocmd FileType python map <buffer> <F8> :!autopep8 -i -a --ignore=W690,E501 %:p;isort %:p;<CR><CR>
+    " " <F9> pep8 by yapf
+    " autocmd FileType python map <buffer> <F9> :!yapf -i %:p --style=pep8;isort %:p;<CR><CR>
+" endif
 
 " <F10>切换缩进线显示
 nmap <silent> <F10> :IndentLinesToggle<CR>
@@ -335,6 +345,8 @@ set completefunc=emoji#complete
 
 " instant-markdown
 let g:instant_markdown_slow = 1
+let g:instant_markdown_autostart = 1
+let g:instant_markdown_allow_unsafe_content = 1
 
 " airline
 let g:airline_theme='simple'
@@ -370,7 +382,7 @@ let g:jedi#completions_command = "<C-n>"
 
 " flake8
 let g:flake8_show_in_file = 1
-let g:flake8_show_in_gutter = 0
+let g:flake8_show_in_gutter = 1
 " autocmd! BufRead,BufWritePost *.py call Flake8()
 
 " gitgutter
