@@ -24,6 +24,7 @@ Plugin 'gmarik/Vundle.vim'
 " plugin on GitHub repo
 
 Plugin 'kabbamine/vcoolor.vim'
+Plugin 'godlygeek/tabular'
 Plugin 'guns/vim-clojure-highlight'
 Plugin 'guns/vim-sexp'
 Plugin 'guns/vim-clojure-static'
@@ -45,7 +46,8 @@ Plugin 'junegunn/vim-emoji'
 Plugin 'mhinz/vim-startify'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-markdown'
-Plugin 'suan/vim-instant-markdown'
+" Plugin 'suan/vim-instant-markdown'
+Plugin 'iamcco/markdown-preview.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'honza/vim-snippets'
 Plugin 'vim-airline/vim-airline'
@@ -171,7 +173,7 @@ autocmd BufWritePre * :%s/\s\+$//e
 
 " 保存文件时自动删除末尾空行
 autocmd BufWritePre * :%s/^$\n\+\%$//ge
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+" autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 " 填充Tab
 set expandtab
 set tabstop=4
@@ -249,7 +251,13 @@ else
 endif
 
 " <F6> 新建标签页
-map <F6> <Esc>:tabnew<CR>
+" map <F6> <Esc>:tabnew<CR>
+
+" 普通模式<F6>打开markdown预览
+nmap <silent> <F6> <Plug>MarkdownPreview
+
+" 普通模式<F7>关闭markdown预览
+nmap <silent> <F9> <Plug>StopMarkdownPreview
 
 " <F9> 拷贝粘贴代码不破坏缩进
 set pastetoggle=<F9>
